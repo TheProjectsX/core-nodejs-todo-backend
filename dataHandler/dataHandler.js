@@ -1,11 +1,23 @@
 /*
 This file contains File CRUD
 */
-
+const path = require("path");
 const fs = require("fs");
+
+const checkAndCreateDataFolders = (filePath) => {
+  const folderPath = path.dirname(filePath);
+
+  if (!fs.existsSync()) {
+    try {
+      fs.mkdirSync(folderPath);
+    } catch (err) {}
+  }
+};
 
 // Read Data from File: FilePath is Required. Object format is optional
 const readFile = async (filePath, type = "string") => {
+  checkAndCreateDataFolders(filePath);
+
   try {
     let data = fs.readFileSync(filePath, "utf8");
     if (type === "object" || type === "array") {
@@ -27,6 +39,8 @@ const readFile = async (filePath, type = "string") => {
 
 // Write Data to File: FilePath and Data are Required
 const writeFile = async (filePath, dataToWrite) => {
+  checkAndCreateDataFolders(filePath);
+
   try {
     fs.writeFileSync(filePath, dataToWrite, "utf8");
     return { success: true };
@@ -38,6 +52,8 @@ const writeFile = async (filePath, dataToWrite) => {
 
 // Update Data to File: FilePath and New Data are Required. Type format is Optional
 const updateFile = async (filePath, dataToUpdate, type = "string") => {
+  checkAndCreateDataFolders(filePath);
+
   const oldData = await readFile(filePath, type);
 
   let newData;
@@ -56,6 +72,8 @@ const updateFile = async (filePath, dataToUpdate, type = "string") => {
 
 // Delete a File
 const deleteFile = async (filePath) => {
+  checkAndCreateDataFolders(filePath);
+
   try {
     fs.unlinkSync(filePath);
     return { success: true };

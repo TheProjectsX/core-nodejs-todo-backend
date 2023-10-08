@@ -1,2 +1,4 @@
-/todo-data/*
-/userData/*
+/node_modules
+
+/todo-data
+/userData
